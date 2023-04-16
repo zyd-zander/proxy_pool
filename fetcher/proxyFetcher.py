@@ -215,10 +215,18 @@ class ProxyFetcher(object):
     #         for proxy in proxies:
     #             yield ':'.join(proxy)
 
+    @staticmethod
+    def freeProxy_proxy_list():
+        url = "https://www.proxy-list.download/HTTPS/"
+        rsp = WebRequest().get(url, verify=False)
+        proxies = re.findall(r'<td>\s*?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s*?</td><td>(\d+)</td>', rsp.text.replace("\n","").replace(" ", ""))
+        for proxy in proxies:
+            yield ":".join(proxy)
+
 
 if __name__ == '__main__':
     p = ProxyFetcher()
-    for _ in p.freeProxy11():
+    for _ in p.freeProxy_proxy_list():
         print(_)
 
 # http://nntime.com/proxy-list-01.htm
